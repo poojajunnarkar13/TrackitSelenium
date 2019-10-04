@@ -1,14 +1,20 @@
 package pageObject;
 
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.testng.Assert;
 
 public class TILogin 
 {
 	WebDriver driver;
+	Object[] winHandle;
 	@FindBy(how=How.XPATH,using="//*[@id=\"login-user-inputEl\"]")
 	private WebElement userID;
 	@FindBy(how=How.XPATH,using="//*[@id=\"login-password-inputEl\"]")
@@ -29,7 +35,6 @@ public class TILogin
 	private WebElement splashScreen;
 	@FindBy(how=How.XPATH,using="//div[@id='product-alert-widget']")
 	private WebElement productAlertWin;
-
 
 
 	public TILogin(WebDriver driver)
@@ -53,7 +58,7 @@ public class TILogin
 	{
 		userGroupPicker.click();
 		userGroupPicker.click();
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		driver.findElement(By.xpath("//li[text()='"+Group+"']")).click();
 		
 	}
@@ -62,6 +67,35 @@ public class TILogin
 	{
 		loginBtn.click();
 		Thread.sleep(10000);
+		/*
+		 * if(splashScreen.isDisplayed()) splashScreen.sendKeys(Keys.ESCAPE);
+		 * if(productAlertWin.isDisplayed()) productAlertWin.sendKeys(Keys.ESCAPE);
+		 */
+	}
+	
+	public void VerifyLoginPopup() throws InterruptedException
+	{
+		if(driver.findElements(By.xpath("//div[@id='splashScreen']")).size() != 0)
+		{
+			System.out.println("Splash screen is Present");
+			splashScreen.sendKeys(Keys.ESCAPE);
+			
+		}
+		else
+		{
+			System.out.println("Splash screen is Absent");
+		}
+		
+		if(driver.findElements(By.xpath("//div[@id='product-alert-widget']")).size() != 0)
+		{
+			System.out.println("Product alert screen is Present");
+			splashScreen.sendKeys(Keys.ESCAPE);
+			
+		}
+		else
+		{
+			System.out.println("Product alert screen is Absent");
+		}
 	}
 	
 	public boolean VerifyLogin(String userName)
@@ -76,10 +110,7 @@ public class TILogin
 		}
 		else 
 			return false;
-		
-		
-		
-		
+				
 	}
 
 }

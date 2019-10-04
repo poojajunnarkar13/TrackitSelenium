@@ -18,6 +18,7 @@ import org.testng.annotations.AfterClass;
 public class Login 
 {
 	WebDriver wd = null;
+	
 
   @BeforeClass
   public void beforeClass() 
@@ -39,7 +40,7 @@ public class Login
   @Test(priority=1)
   public void LaunchTrackit()
   {
-	  wd.get("http://vw-pun-trt-qa16/TrackIt");
+	  wd.get("http://vw-pun-trt-qa04/TrackIt");
 	  wd.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS); //Wait for response from server
 	  Assert.assertTrue(wd.getTitle().startsWith("Track-It!"));
   }
@@ -48,13 +49,14 @@ public class Login
   public void LoginTrackit() throws InterruptedException
   {
 	  TILogin l = PageFactory.initElements(wd, TILogin.class);
-	  l.setUserID("AUTOSATECH2");
+	  l.setUserID("AUTOSATECH1");
 	  l.setUserPwd("welcome");
-	  l.setUserGroup("AUTOGROUP2");
+	  l.setUserGroup("AUTOGROUP1");
 	  l.Login();
-	  //wd.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	  wd.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+	  l.VerifyLoginPopup();
 	  Assert.assertEquals(wd.findElement(By.xpath("//*[@id=\"ti-add-new-button\"]")).getText(), "ADD NEW");
-	  boolean loginSucceeded = l.VerifyLogin("AUTOSATECH2");
+	  boolean loginSucceeded = l.VerifyLogin("AUTOSATECH1");
 	  if(!loginSucceeded)
 		  Assert.fail("Login unsuccessfull");
 		  
